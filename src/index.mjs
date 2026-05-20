@@ -13,6 +13,7 @@ import { runWarmup } from './warmup.mjs';
 
 const DEBUG = process.argv.includes('--debug');
 const RUN_LOG = 'data/run.log';
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 function log(msg) {
   const line = `[${new Date().toISOString()}] ${msg}`;
@@ -24,7 +25,6 @@ function log(msg) {
   } catch {}
 }
 
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function main() {
   log('Twitter Comment Pack starting...');
@@ -35,14 +35,12 @@ async function main() {
   await sendAlert(cfg.telegram?.botToken, cfg.telegram?.chatId,
     `[twitter-comment-pack] started in mode ${cfg.mode}`);
 
-  // Schedule background session check every 2h, plus once on startup
   const runHealth = async () => {
     try { await runWarmup(cfg, DEBUG); } catch {}
   };
   runHealth();
   setInterval(runHealth, 2 * 60 * 60 * 1000);
 
-  // Main mode loop
   while (true) {
     try {
       if (cfg.mode === 'A') await runListMode(cfg, log);
@@ -56,7 +54,6 @@ async function main() {
         process.exit(1);
       }
     }
-    // Sleep between full cycles
     const cycleSleep = 5 * 60 * 1000 + Math.floor(Math.random() * 5 * 60 * 1000);
     log(`Cycle done. Sleeping ${Math.round(cycleSleep / 60000)} min before next cycle.`);
     await sleep(cycleSleep);

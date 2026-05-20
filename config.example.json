@@ -4,28 +4,23 @@
     "botToken": "",
     "chatId": ""
   },
-  "mode": "C",
+  "mode": "A",
   "modeA": {
-    "listIds": [
-      "2057058423284322768"
-    ],
+    "listIds": [],
     "language": "auto",
     "stylePrompt": ""
   },
   "modeB": {
-    "ownerUsername": "ViralVideoHook",
-    "hashtags": [
-      "#Crypto",
-      "#Bitcoin"
-    ],
-    "crossPostListId": "2057058423284322768"
+    "ownerUsername": "",
+    "hashtags": [],
+    "crossPostListId": ""
   },
   "commentsPerHour": 15,
   "delayMinMs": 60000,
   "delayMaxMs": 240000,
   "ai": {
-    "provider": "deepseek",
-    "apiKey": "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",
+    "provider": "",
+    "apiKey": "",
     "model": ""
   }
 }

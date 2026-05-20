@@ -1,6 +1,3 @@
-/**
- * Minimal Telegram alert sender.
- */
 export async function sendAlert(token, chatId, text) {
   if (!token || !chatId) return;
   try {
@@ -13,6 +10,5 @@ export async function sendAlert(token, chatId, text) {
       // swallow
     }
   } catch {
-    // swallow — never crash on telegram errors
   }
 }

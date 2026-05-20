@@ -17,11 +17,11 @@ const ask = (q) => new Promise((res) => rl.question(q, (a) => res(a.trim())));
 
 async function askMultiline(prompt) {
   console.log(prompt);
-  console.log('(Paste content, then on a NEW line type EOF and press Enter)');
+  console.log('(Paste content, then on a NEW line type OK and press Enter)');
   return new Promise((res) => {
     let buf = '';
     const onLine = (line) => {
-      if (line.trim() === 'EOF') {
+      if (line.trim() === 'OK') {
         rl.removeListener('line', onLine);
         res(buf);
         return;
@@ -33,10 +33,6 @@ async function askMultiline(prompt) {
 }
 
 function normalizeCookies(raw) {
-  // Accepts:
-  //   1) Cookie-Editor JSON array: [{name, value, domain, ...}, ...]
-  //   2) Object with {auth_token, ct0, ...}
-  //   3) Already-wrapped {cookies: [...]}
   let parsed;
   try {
     parsed = JSON.parse(raw);

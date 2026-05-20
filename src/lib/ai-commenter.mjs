@@ -30,11 +30,11 @@ Reply with ONLY the comment text. Nothing else.`;
 }
 
 async function callDeepseek({ apiKey, model, prompt }) {
-  const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+  const res = await fetch('https://api.deepseek.com/chat/completions', {
     method: 'POST',
     headers: { 'content-type': 'application/json', authorization: `Bearer ${apiKey}` },
     body: JSON.stringify({
-      model: model || 'deepseek/deepseek-v4-flash',
+      model: model || 'deepseek-chat',
       messages: [{ role: 'user', content: prompt }],
       max_tokens: 200,
       temperature: 0.95,
@@ -94,6 +94,5 @@ export async function generateComment({ tweetText, lang, style, ai }) {
   else throw new Error(`Unknown AI provider: ${provider}`);
 
   if (!text) throw new Error('AI returned empty comment');
-  // Strip surrounding quotes if model added them
   return text.replace(/^["'`]+|["'`]+$/g, '').trim();
 }

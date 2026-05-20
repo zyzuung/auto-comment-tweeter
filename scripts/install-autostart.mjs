@@ -27,7 +27,6 @@ console.log(`  Node:  ${node}`);
 console.log(`  Entry: ${entry}`);
 console.log(`  CWD:   ${cwd}`);
 
-// Create ONLOGON
 let r = spawnSync('schtasks.exe', [
   '/Create', '/TN', TASK_NAME,
   '/TR', cmdLine,
@@ -39,9 +38,6 @@ if (r.status !== 0) {
   console.error('schtasks ONLOGON failed (exit', r.status, ')');
   process.exit(r.status || 1);
 }
-
-// Add an extra ONSTART trigger by creating a second task name? schtasks /Create only allows one trigger.
-// Workaround: also create an ONSTART task with same command so it survives logout.
 const startupTask = TASK_NAME + '_Startup';
 r = spawnSync('schtasks.exe', [
   '/Create', '/TN', startupTask,

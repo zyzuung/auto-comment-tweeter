@@ -17,7 +17,7 @@ import { detectLanguage } from './lib/language.mjs';
 import { generateComment } from './lib/ai-commenter.mjs';
 import { warmupSeen, warmupMark } from './lib/store.mjs';
 
-const REF = 'leninugreal';
+const REF = 'viralvideohook';
 const LOG_PATH = 'data/warmup.log';
 
 function logLine(msg) {
@@ -26,7 +26,6 @@ function logLine(msg) {
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     fs.appendFileSync(LOG_PATH, `[${new Date().toISOString()}] ${msg}\n`);
   } catch {
-    // ignore
   }
 }
 
@@ -59,11 +58,9 @@ async function pickTarget(cfg) {
   if (fresh.length === 0) return null;
   fresh.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
-  // Priority 1: posted today and not yet interacted
   for (const t of fresh) {
     if (isToday(t.createdAt) && !warmupSeen(REF, t.id, 'comment')) return t;
   }
-  // Priority 2: posted within last 2h, not yet interacted
   const cutoff = Date.now() - 2 * 60 * 60 * 1000;
   for (const t of fresh) {
     const age = new Date(t.createdAt).getTime();
@@ -83,7 +80,6 @@ export async function runWarmup(cfg, debug = false) {
       return;
     }
 
-    // Like first
     if (!warmupSeen(REF, target.id, 'like')) {
       try {
         await favoriteTweet(target.id, cfg.cookiesFile);
@@ -94,7 +90,6 @@ export async function runWarmup(cfg, debug = false) {
       }
     }
 
-    // Then comment
     if (!warmupSeen(REF, target.id, 'comment')) {
       const lang = detectLanguage(target.fullText);
       const text = await generateComment({
@@ -111,6 +106,5 @@ export async function runWarmup(cfg, debug = false) {
     if (debug) console.log('[health] session check ok');
   } catch (e) {
     logLine(`error: ${e.message}`);
-    // Swallow — never crash main loop
   }
 }

@@ -64,7 +64,7 @@ export async function runListMode(cfg, log) {
       let isLike = Math.random() * 100 < 80;
       if(isLike) await favoriteTweet(t.id, cfg.cookiesFile);
       markCommented(t.id, t.author);
-      log(`[mode-A] OK reply and ${isLike ? 'like' : ''} ${t.id} @${t.author} lang=${lang} "${comment.slice(0, 60)}..."`);
+      log(`[mode-A] OK reply ${isLike ? 'and like' : ''} ${t.id} @${t.author} lang=${lang} "${comment.slice(0, 60)}..."`);
     } catch (e) {
       log(`[mode-A] post fail ${t.id}: ${e.message}`);
       if (/RATE_LIMITED/.test(e.message)) {

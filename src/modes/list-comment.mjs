@@ -2,7 +2,7 @@
  * Mode A — crawl one or more lists, comment on each unique tweet using
  * the configured language + style.
  */
-import { fetchListTweets, postTweet } from '../lib/twitter-http.mjs';
+import { favoriteTweet,fetchListTweets, postTweet } from '../lib/twitter-http.mjs';
 import { detectLanguage } from '../lib/language.mjs';
 import { generateComment } from '../lib/ai-commenter.mjs';
 import { alreadyCommented, markCommented } from '../lib/store.mjs';
@@ -61,8 +61,10 @@ export async function runListMode(cfg, log) {
 
     try {
       await postTweet(comment, cfg.cookiesFile, { replyToId: t.id });
+      let isLike = Math.random() * 100 < 80;
+      if(isLike) await favoriteTweet(t.id, cfg.cookiesFile);
       markCommented(t.id, t.author);
-      log(`[mode-A] OK reply ${t.id} @${t.author} lang=${lang} "${comment.slice(0, 60)}..."`);
+      log(`[mode-A] OK reply and ${isLike ? 'like' : ''} ${t.id} @${t.author} lang=${lang} "${comment.slice(0, 60)}..."`);
     } catch (e) {
       log(`[mode-A] post fail ${t.id}: ${e.message}`);
       if (/RATE_LIMITED/.test(e.message)) {

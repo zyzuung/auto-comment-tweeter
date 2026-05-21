@@ -17,7 +17,7 @@ import { detectLanguage } from './lib/language.mjs';
 import { generateComment } from './lib/ai-commenter.mjs';
 import { warmupSeen, warmupMark } from './lib/store.mjs';
 
-const REF = 'viralvideohook';
+const REF = 'yukiyuki_4u';
 const LOG_PATH = 'data/warmup.log';
 
 function logLine(msg) {
